@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 
 def user_input():
@@ -24,7 +23,9 @@ def user_input():
 
     Sleep_Duration = float(input("How many hours of sleep do you get on average? "))
     Sleep_Quality = int(input("Rate your quality of sleep (1 to 10): "))
+
     Stress_Level = int(input("How stressed are you (1 to 10)? "))
+    Mental_Description = input("Describe your mental state: ")
 
     # Split input data into two dictionaries
     obesity_metrics = {
@@ -47,11 +48,16 @@ def user_input():
         'Daily Steps': Daily_Steps,
     }
 
+    mental_health_description = {
+        'statement': Mental_Description
+    }
+
     # Convert to DataFrames
     obesity_df = pd.DataFrame([obesity_metrics])
     sleep_df = pd.DataFrame([sleep_metrics])
+    mental_health_df = pd.DataFrame([mental_health_description])
 
-    return obesity_df, sleep_df
+    return obesity_df, sleep_df, mental_health_df
 
 # ========== Add Obesity Prediction to Sleep Data ==========
 def add_obesity_to_sleep(sleep_df, obesity_prediction):

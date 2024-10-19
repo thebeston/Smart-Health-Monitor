@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import seaborn as sns
 import string
@@ -6,10 +5,10 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 
 # Load datasets
-sleep_df = pd.read_csv(r'C:\Users\abhis\OneDrive\Desktop\Smart Health\Smart-Health-Monitor\datasets\Sleep_health_and_lifestyle_dataset.csv')
-obesity_df = pd.read_csv(r'C:\Users\abhis\OneDrive\Desktop\Smart Health\Smart-Health-Monitor\datasets\obesity_data.csv')
-mental_health_df = pd.read_csv(r'Smart-Health-Monitor/datasets/Combined Data.csv')
-physical_level_df = pd.read_csv(r'C:\Users\abhis\OneDrive\Desktop\Smart Health\Smart-Health-Monitor\datasets\extended_physical_activity_dataset.csv')
+sleep_df = pd.read_csv(r'Smart-Health-Monitor\datasets\Sleep_health_and_lifestyle_dataset.csv', na_values=[], keep_default_na=False)
+obesity_df = pd.read_csv(r'Smart-Health-Monitor\datasets\obesity_data.csv')
+mental_health_df = pd.read_csv(r'Smart-Health-Monitor\datasets\Combined Data.csv')
+physical_level_df = pd.read_csv(r'Smart-Health-Monitor\datasets\extended_physical_activity_dataset.csv')
 
 # Function to process sleep data
 def load_and_process_sleep_data(dataframe, show_matrix=False):
@@ -21,10 +20,11 @@ def load_and_process_sleep_data(dataframe, show_matrix=False):
     dataframe.dropna(inplace=True)
     dataframe.dropna(axis=1, inplace=True)
     dataframe.drop_duplicates(inplace=True)
-    dataframe = dataframe.rename(columns={'Sleep Duration': 'Sleep_Duration', 'Quality of Sleep': 'Sleep_Quality', 'Physical Activity Level': 'Physical_activity_duration', 'Stress Level': 'Stress_Level', 'Daily Steps': 'Daily_Steps'})
+    #dataframe = dataframe.rename(columns={'Sleep Duration': 'Sleep_Duration', 'Quality of Sleep': 'Sleep_Quality', 'Physical Activity Level': 'Physical_activity_duration', 'Stress Level': 'Stress_Level', 'Daily Steps': 'Daily_Steps'})
 
     # Merge certain outputs into one
     dataframe['Sleep Disorder'] = dataframe['Sleep Disorder'].replace('Sleep Apnea', 'Insomnia')
+    dataframe['Sleep Disorder'] = dataframe['Sleep Disorder'].replace('None', 'No Disorder')
     dataframe['BMI Category'] = dataframe['BMI Category'].replace('Normal', 'Normal Weight')
 
     if show_matrix:
@@ -74,7 +74,6 @@ def clean_text(text):
     return text
 
 mental_health_df['statement'] = mental_health_df['statement'].apply(clean_text)
-print(mental_health_df.head(10))
 
 
 

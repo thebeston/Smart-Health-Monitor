@@ -14,7 +14,6 @@ from sklearn.utils import resample
 from itertools import combinations
 from imblearn.over_sampling import SMOTE
 from data_filtering import load_and_process_sleep_data, load_and_process_obesity_data, clean_text
-from input import user_input
 
 # Helper Function: Train and Cross-Validate Model
 def train_and_cross_validate(model, X_train, y_train, cv=5):
@@ -67,7 +66,7 @@ param_grids = {
 # ========== Obesity Dataset ========== # 
 def train_and_predict_obesity_status():
     # Load Obesity Data
-    obesity_df = pd.read_csv(r'C:\Users\aarav\OneDrive\Desktop\finance-tracker-app\Health ML Project\Smart-Health-Monitor\datasets\obesity_data.csv')
+    obesity_df = pd.read_csv(r'datasets\obesity_data.csv')
     load_and_process_obesity_data(obesity_df)
 
     # Define Features and Target
@@ -104,14 +103,15 @@ def train_and_predict_obesity_status():
 # ========== Sleep Dataset ========== #
 def train_and_predict_sleep_disorder():
     # Load Sleep Data
-    sleep_df = pd.read_csv(r'Smart-Health-Monitor\datasets\Sleep_health_and_lifestyle_dataset.csv', na_values=[], keep_default_na=False)
+    sleep_df = pd.read_csv(r'datasets\Sleep_health_and_lifestyle_dataset.csv', na_values=[], keep_default_na=False)
     load_and_process_sleep_data(sleep_df)
 
     # Define Features and Target
     x = sleep_df.drop(['Sleep Disorder'], axis=1)
     y = sleep_df['Sleep Disorder']
     x = convert_col_to_num(x)
-    class_names = ['No Disorder', 'Insomnia']
+    class_names = ['No Disorder', 'Sleep Apnea', 'Insomnia']
+    print(y.unique())
 
     # Label Encoding for Categorical Variables
     x = convert_col_to_num(x)
@@ -160,8 +160,8 @@ def train_and_predict_sleep_disorder():
 # ========== Mental Health Dataset ========== #
 def train_and_predict_mental_health_state():
     # Load and Clean Data
-    mental_health_df = pd.read_csv(r'Smart-Health-Monitor\datasets\Combined Data.csv')
-    mental_health_df = mental_health_df.head(9000).dropna().copy()
+    mental_health_df = pd.read_csv(r'datasets\Combined Data.csv')
+    mental_health_df = mental_health_df.head(7000).dropna().copy()
     mental_health_df.drop(mental_health_df.columns[0], axis=1, inplace=True)
 
     # Define Features and Target
@@ -227,7 +227,9 @@ def get_prediction(model, metrics, features=[], merge_columns=[], merge_values=[
 
 
 if __name__ == "__main__":
-    obesity_metrics, sleep_metrics, mental_health_dstp = user_input()
+    from input import user_input
+
+    obesity_metrics, sleep_metrics, mental_health_dstp, diet = user_input()
     obesity_model, obesity_features = train_and_predict_obesity_status()
     sleep_model, sleep_features = train_and_predict_sleep_disorder()
     mental_health_model, vectorizer = train_and_predict_mental_health_state()
@@ -239,4 +241,5 @@ if __name__ == "__main__":
     
     print(f"Your Obesity Level: {obesity_prediction}")
     print(f"Potential Sleep Disorder: {sleep_prediction}")
-    print(f"Mental Health Status Prediction: {mental_health_prediction}")  # Adjusted label for clarity
+    print(f"Mental Health Status Prediction: {mental_health_prediction}")
+    print(f"Diet: {diet}")

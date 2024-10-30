@@ -7,8 +7,6 @@ def user_input():
     Gender = input('What is your Gender (Male/Female): ').strip().lower()
     Gender = 1 if Gender == 'male' else 2  # Convert to numeric
 
-    Occupation = input("What is your occupation? ")
-
     # Get height in feet and inches
     feet = int(input('Feet: '))
     inches = float(input('Inches: '))
@@ -18,6 +16,7 @@ def user_input():
 
     Physical_activity = int(input("Rate your physical activity level (1 - 4): "))
     Physical_activity_duration = int(input("How many minutes do you exercise daily on average? "))
+    Diet = input("What is your typical diet on a daily basis? ")
 
     Daily_Steps = int(input("How many steps per day do you walk on average? "))
 
@@ -40,7 +39,6 @@ def user_input():
     sleep_metrics = {
         'Age': Age,
         'Gender': Gender,
-        'Occupation': Occupation,
         'Sleep Duration': Sleep_Duration,
         'Quality of Sleep': Sleep_Quality,
         'Physical Activity Level': Physical_activity_duration,
@@ -57,10 +55,4 @@ def user_input():
     sleep_df = pd.DataFrame([sleep_metrics])
     mental_health_df = pd.DataFrame([mental_health_description])
 
-    return obesity_df, sleep_df, mental_health_df
-
-# ========== Add Obesity Prediction to Sleep Data ==========
-def add_obesity_to_sleep(sleep_df, obesity_prediction):
-    """Add obesity prediction as a new feature in the sleep DataFrame."""
-    sleep_df['BMI Category'] = obesity_prediction
-    return sleep_df
+    return obesity_df, sleep_df, mental_health_df, Diet
